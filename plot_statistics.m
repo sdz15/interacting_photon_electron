@@ -31,10 +31,10 @@ traj_interacting_bob = Inf(N,ode_num);
 cmap = colormap;
 
 for x=1:N
-    opts = odeset('RelTol',1e-8,'AbsTol',1e-10);
+    % opts = odeset('RelTol',1e-8,'AbsTol',1e-10);
     q0 = initvals(:,x);
-    [tt_noninteracting,qq_noninteracting] = ode45(@(t,q) velocity(abs(psiMinusMinus(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiMinusPlus(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusMinusFar(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusPlusFar(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2),times,q0,opts);
-    [tt_interacting,qq_interacting] = ode45(@(t,q) velocity(abs(psiMinusMinus(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiMinusPlus(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusMinusNear(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2,abs(psiPlusPlusNear(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2),times,q0,opts);
+    [tt_noninteracting,qq_noninteracting] = ode45(@(t,q) velocity(abs(psiMinusMinus(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiMinusPlus(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusMinusFar(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusPlusFar(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2),times,q0);
+    [tt_interacting,qq_interacting] = ode45(@(t,q) velocity(abs(psiMinusMinus(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiMinusPlus(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusMinusNear(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2,abs(psiPlusPlusNear(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2),times,q0);
 
     % SAVING VALUES OF TRAJECTORIES TO BE PLOTTED LATER
     traj_noninteracting_alice(x,:) = qq_noninteracting(:,1);
@@ -61,19 +61,19 @@ fun_electron_alice = zeros(time/mesh+1,(mu_el-mu_ph)/mesh+1);
 mu_fun_photon_alice = zeros(1,time/mesh+1);
 mu_fun_electron_alice = zeros(1,time/mesh+1);
 
-for t = 1:time/mesh+1
-    for s = 1:(pos_bob-pos_alice)/mesh+1
-        % fun(t,s) = j10(abs(psiMinusMinus(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiMinusPlus(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusMinusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2,abs(psiPlusPlusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2)+j01(abs(psiMinusMinus(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiMinusPlus(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusMinusNear(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2,abs(psiPlusPlusNear(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2);
-
-        % PLOTTING ALICE USING FIRST TWO TERMS OF (31) FROM ARRIVAL TIMES PAPER
-        fun_photon_alice(t,s) = abs(psiPlusMinusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2+abs(psiPlusPlusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2;
-
-        % PLOTTING BOB USING SECOND TWO TERMS OF (31) FROM ARRIVAL TIMES PAPER
-        fun_electron_alice(t,s) = abs(psiMinusPlus(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2+abs(psiPlusPlusFar(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2;
-    end
-    mu_fun_photon_alice(t) = trapz(fun_photon_alice(t,:))*mesh;
-    mu_fun_electron_alice(t) = trapz(fun_electron_alice(t,:))*mesh;
-end
+% for t = 1:time/mesh+1
+%     for s = 1:(pos_bob-pos_alice)/mesh+1
+%         % fun(t,s) = j10(abs(psiMinusMinus(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiMinusPlus(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusMinusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2,abs(psiPlusPlusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2)+j01(abs(psiMinusMinus(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiMinusPlus(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2,abs(psiPlusMinusNear(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2,abs(psiPlusPlusNear(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2);
+% 
+%         % PLOTTING ALICE USING FIRST TWO TERMS OF (31) FROM ARRIVAL TIMES PAPER
+%         fun_photon_alice(t,s) = abs(psiPlusMinusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2+abs(psiPlusPlusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang)).^2;
+% 
+%         % PLOTTING BOB USING SECOND TWO TERMS OF (31) FROM ARRIVAL TIMES PAPER
+%         fun_electron_alice(t,s) = abs(psiMinusPlus(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2+abs(psiPlusPlusFar(times(t),space(s),times(t),pos_alice,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega)).^2;
+%     end
+%     mu_fun_photon_alice(t) = trapz(fun_photon_alice(t,:))*mesh;
+%     mu_fun_electron_alice(t) = trapz(fun_electron_alice(t,:))*mesh;
+% end
 
 
 %PLOTTING STATISTICS BELOW
@@ -140,22 +140,22 @@ xlim([0 time])
 legend('interacting photon','noninteracting electron');
 text(1,5,txt);
 
-figure(6)
-xlim([0 time])
-plot(times,mu_fun_photon_alice);
-hold on
-plot(times,mu_fun_electron_alice);
-title('Probability density function of arrival times at Alice')
-legend('interacting photon','noninteracting electron');
-text(1,10,txt);
-
-figure(7)
-xlim([0 time])
-plot(times,cumtrapz(times,mu_fun_photon_alice));
-hold on
-plot(times,cumtrapz(times,mu_fun_electron_alice));
-title('Cumulative distribution function of arrival times at Alice')
-legend('interacting photon','noninteracting electron');
-text(1,10,txt);
+% figure(6)
+% xlim([0 time])
+% plot(times,mu_fun_photon_alice);
+% hold on
+% plot(times,mu_fun_electron_alice);
+% title('Probability density function of arrival times at Alice')
+% legend('interacting photon','noninteracting electron');
+% text(1,10,txt);
+% 
+% figure(7)
+% xlim([0 time])
+% plot(times,cumtrapz(times,mu_fun_photon_alice));
+% hold on
+% plot(times,cumtrapz(times,mu_fun_electron_alice));
+% title('Cumulative distribution function of arrival times at Alice')
+% legend('interacting photon','noninteracting electron');
+% text(1,10,txt);
 
 save('interacting_photon_electron_variables.mat')
