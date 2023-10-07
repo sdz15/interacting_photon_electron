@@ -10,7 +10,7 @@ function val = psiPlusPlusNear(t_ph,s_ph,t_el,s_el,theta_ph,theta_el,sigma_ph,si
         arr(i) = psiPlusMinusNear(t_ph,s_ph,x,s_el+t_el-x,theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang,step);
         i = i+1;
     end
-    x2 = -1i*omega*trapz((t_el-t_til)/step,arr);
+    x2 = -1i*omega*trapz(t_til:(t_el-t_til)/step,arr);
 
     val = x1+x2;
 end
