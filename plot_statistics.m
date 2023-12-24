@@ -26,11 +26,11 @@ ylimits=ylim;
 text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*1/4,txt);
 
 figure(2)
-scatter(initvals(1,:),yy_photon_alice);
+scatter(initvals(1,:),yy_photon);
 hold on;
-scatter(initvals(2,:),yy_electron_alice);
+scatter(initvals(2,:),yy_single_free);
 hold on;
-scatter(initvals(2,:),yy_single);
+scatter(initvals(2,:),yy_single_boundary);
 hold on;
 xlabel('Initial position','FontSize',20);
 ylabel('Arrival time','FontSize',20);
@@ -48,11 +48,17 @@ hold on
 cdfplot(yy_single_free);
 hold on
 cdfplot(yy_single_boundary);
+hold on
+cdfplot(n_yy_photon);
+hold on
+cdfplot(n_yy_single_free);
+hold on
+cdfplot(n_yy_single_boundary);
 xlabel('Time','Fontsize',20)
 title('Cumulative distribution of arrival times at Alice');
 xlim([0 time])
 ylim([0 1])
-legend({'interacting photon','noninteracting electron','single electron w/ boundary'},'Location','southwest');
+legend({'interacting photon','noninteracting electron','single electron w/ boundary','normalized interacting photon','normalized noninteracting electron','normalized single electron w/ boundary'},'Location','southwest');
 xlimits=xlim;
 ylimits=ylim;
 text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*5/8,txt);
@@ -91,37 +97,6 @@ text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)+ylimits(1))*1/2,txt);
 hold off
 
 figure(6)
-cdfplot(n_yy_photon);
-hold on
-cdfplot(n_yy_single_free);
-hold on
-cdfplot(n_yy_single_boundary);
-xlabel('Time','Fontsize',20)
-title('Normalized cumulative distribution of arrival times at Alice');
-xlim([0 time])
-ylim([0 1])
-legend({'interacting photon','noninteracting electron','single electron w/ boundary'},'Location','southwest');
-xlimits=xlim;
-ylimits=ylim;
-text(xlimits(1)+(xlimits(2)-xlimits(1))*3/4,(ylimits(2)+ylimits(1))*1/2,txt);
-hold off
-
-figure(7)
-histogram(n_yy_photon);
-hold on
-histogram(n_yy_single_free);
-hold on
-histogram(n_yy_single_boundary);
-xlabel('Time','Fontsize',20)
-title('Normalized histogram of arrival times at Alice');
-xlim([0 time])
-legend({'interacting photon','noninteracting electron','single electron w/ boundary'},'Location','southwest');
-xlimits=xlim;
-ylimits=ylim;
-text(xlimits(1)+(xlimits(2)-xlimits(1))*3/4,(ylimits(2)+ylimits(1))*1/2,txt);
-hold off
-
-figure(8)
 xlim([0 time])
 plot(times,mu_fun_photon);
 hold on
@@ -136,7 +111,7 @@ ylimits=ylim;
 text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*5/8,txt);
 hold off
 
-figure(9)
+figure(7)
 xlim([0 time])
 plot(times,cumtrapz(times,mu_fun_photon));
 hold on

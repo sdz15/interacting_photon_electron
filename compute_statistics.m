@@ -27,7 +27,6 @@ ode_num = length(times);
 
 traj_single_free = Inf(N,ode_num);
 traj_interacting_alice = Inf(N,ode_num);
-traj_interacting_bob = Inf(N,ode_num);
 traj_single_boundary = Inf(N,ode_num);
 
 for x=1:N
