@@ -2,7 +2,7 @@ txt = {strcat('theta\_ph=',string(theta_ph)),strcat('theta\_el=',string(theta_el
 
 for x=1:N
     figure(1)
-    plot(traj_interacting_alice(x,:),tt_interacting,'Color',[0 0.4470 0.7410]);
+    plot(traj_interacting_photon(x,:),tt_interacting_photon,'Color',[0 0.4470 0.7410]);
     drawnow
     hold on;
     plot(traj_single_free(x,:),tt_single_free,'Color',[0.8500 0.3250 0.0980]);

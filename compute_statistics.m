@@ -26,27 +26,27 @@ yy_single_boundary = Inf(1,N); % arrival time of electron at Alice with the boun
 ode_num = length(times);
 
 traj_single_free = Inf(N,ode_num);
-traj_interacting_alice = Inf(N,ode_num);
+traj_interacting_photon = Inf(N,ode_num);
 traj_single_boundary = Inf(N,ode_num);
 
 for x=1:N
     x
     q0 = initvals(:,x);
     [tt_single_free,qq_single_free] = ode45(@(t,q) velocity_single_electron(abs(phiMinus(t,q,theta_el,sigma_el,k_el,0,omega,step)).^2,abs(phiPlus(t,q,theta_el,sigma_el,k_el,0,omega,step)).^2),times,q0(2)-mu_el);
-    [tt_interacting,qq_interacting] = ode45(@(t,q) velocity_helper(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang,step,true),times,q0);
+    [tt_interacting_photon,qq_interacting_photon] = ode45(@(t,q) velocity_helper(t,q(1),t,q(2),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang,step,true),times,q0);
     [tt_single_boundary,qq_single_boundary] = ode45(@(t,q) velocity_single_electron(abs(psiMinus(t,q,theta_el,sigma_el,k_el,0,omega,abs(L),step)).^2,abs(psiPlus(t,q,theta_el,sigma_el,k_el,0,omega,abs(L),step)).^2),times,q0(2)-mu_el);
 
     % SAVING VALUES OF TRAJECTORIES TO BE PLOTTED LATER
     traj_single_free(x,:) = qq_single_free;
-    traj_interacting_alice(x,:) = qq_interacting(:,1);
+    traj_interacting_photon(x,:) = qq_interacting_photon(:,1);
     traj_single_boundary(x,:) = qq_single_boundary;
 
-    f_photon = find(traj_interacting_alice(x,:)<=pos_alice,1);
+    f_photon = find(traj_interacting_photon(x,:)<=pos_alice,1);
     f_single_free = find(traj_single_free(x,:)<=L,1);
     f_single_boundary = find(traj_single_boundary(x,:)<=L,1);
 
     if (~(f_photon == Inf))
-        yy_photon(x) = tt_interacting(f_photon);
+        yy_photon(x) = tt_interacting_photon(f_photon);
     end
     if (~(f_single_free == Inf))
         yy_single_free(x) = tt_single_free(f_single_free);
