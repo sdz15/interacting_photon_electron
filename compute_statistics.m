@@ -2,21 +2,21 @@ theta_ph = 0;
 theta_el = pi/2;
 mu_ph = 0;
 mu_el = 1;
-sigma_ph = .1;
-sigma_el = .1;
+sigma_ph = .005;
+sigma_el = .005;
 k_ph = 0;
 k_el = 0;
 omega = 2;
 ang = 0;
 time = 4;
-N = 500;
+N = 200;
 mesh = .01;
-step = 10/mesh;
+step = 1/mesh;
 pos_alice = mu_ph-1;
 pos_bob = mu_el+1;
 L = pos_alice-mu_el;
 
-times = (1e-1:mesh:time)+1e-6;
+times = (0:mesh:time)+1e-6;
 
 initvals = initialvals([sigma_ph,sigma_el],[mu_ph,mu_el],N,2);
 yy_photon = Inf(1,N); % arrival time of photon at Alice when photon and electron interact
@@ -68,7 +68,6 @@ n_yy_single_boundary=normalize(yy_single_boundary);
 
 % COMPUTING THEORETICAL STATISTICS
 space = (pos_alice:mesh:pos_bob);
-times = (0:mesh:time);
 
 fun_photon = zeros(time/mesh+1,(mu_el-mu_ph)/mesh+1);
 mu_fun_photon = zeros(1,time/mesh+1);
@@ -88,8 +87,21 @@ for t = 1:time/mesh+1
         fun_photon(t,s) = -j10(pMM1,pMP1,pPM1,pPP1);
     end
     mu_fun_photon(t) = trapz(fun_photon(t,:))*mesh;
-    mu_fun_single_free(t) = abs(phiPlus(times(t),L,theta_el,sigma_el,k_el,0,omega,step)).^2;
+    mu_fun_single_free(t) = -2*j1(abs(phiMinus(times(t),L,theta_el,sigma_el,k_el,0,omega,step)).^2,abs(phiPlus(times(t),L,theta_el,sigma_el,k_el,0,omega,step)).^2);
     mu_fun_single_boundary(t) = abs(psiPlus(times(t),L,theta_el,sigma_el,k_el,0,omega,abs(L),step)).^2;
 end
+
+figure
+hold on;
+plot(times,cumtrapz(times,mu_fun_single_free));
+plot(times,cumtrapz(times,mu_fun_single_boundary));
+xlabel('Time','Fontsize',20)
+title('Cumulative distributions of arrival times at Alice');
+xlim([0 time])
+ylim([0 1])
+xlimits=xlim;
+ylimits=ylim;
+text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*5/8,txt);
+hold off
 
 % TO PLOT THESE STATISTICS, GO TO PLOT_STATISTICS.M
