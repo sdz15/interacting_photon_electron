@@ -4,12 +4,12 @@ mu_ph = 0;
 mu_el = 1;
 sigma_ph = .005;
 sigma_el = .005;
-k_ph = 0;
-k_el = 0;
-omega = 2;
+k_ph = 25;
+k_el = -25;
+omega = 5;
 ang = 0;
-time = 4;
-N = 200;
+time = 2.5;
+N = 500;
 mesh = .01;
 step = 1/mesh;
 pos_alice = mu_ph-1;
@@ -67,41 +67,30 @@ n_yy_single_free=normalize(yy_single_free);
 n_yy_single_boundary=normalize(yy_single_boundary);
 
 % COMPUTING THEORETICAL STATISTICS
+mesh = .0001;
+step = 1/mesh;
+times_prob = (0:mesh:time)+1e-6;
 space = (pos_alice:mesh:pos_bob);
 
-fun_photon = zeros(time/mesh+1,(mu_el-mu_ph)/mesh+1);
-mu_fun_photon = zeros(1,time/mesh+1);
+% fun_photon = zeros(time/mesh+1,(mu_el-mu_ph)/mesh+1);
+% mu_fun_photon = zeros(1,time/mesh+1);
 mu_fun_single_free = zeros(1,time/mesh+1);
 mu_fun_single_boundary = zeros(1,time/mesh+1);
 
 for t = 1:time/mesh+1
-    t
-    for s = 1:(pos_bob-pos_alice)/mesh+1
-        % Wave function for photon j10
-        pMM1 = abs(psiMinusMinus(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,step)).^2;
-        pMP1 = abs(psiMinusPlus(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,step)).^2;
-        pPM1 = abs(psiPlusMinusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang,step)).^2;
-        pPP1 = abs(psiPlusPlusNear(times(t),pos_alice,times(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang,step)).^2;
-
-        % Calculating probabilities
-        fun_photon(t,s) = -j10(pMM1,pMP1,pPM1,pPP1);
-    end
-    mu_fun_photon(t) = trapz(fun_photon(t,:))*mesh;
-    mu_fun_single_free(t) = -2*j1(abs(phiMinus(times(t),L,theta_el,sigma_el,k_el,0,omega,step)).^2,abs(phiPlus(times(t),L,theta_el,sigma_el,k_el,0,omega,step)).^2);
-    mu_fun_single_boundary(t) = abs(psiPlus(times(t),L,theta_el,sigma_el,k_el,0,omega,abs(L),step)).^2;
+    % for s = 1:(pos_bob-pos_alice)/mesh+1
+    %     % Wave function for photon j10
+    %     pMM = abs(psiMinusMinus(times_prob(t),pos_alice,times_prob(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,step)).^2;
+    %     pMP = abs(psiMinusPlus(times_prob(t),pos_alice,times_prob(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,step)).^2;
+    %     pPM = abs(psiPlusMinusNear(times_prob(t),pos_alice,times_prob(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang,step)).^2;
+    %     pPP = abs(psiPlusPlusNear(times_prob(t),pos_alice,times_prob(t),space(s),theta_ph,theta_el,sigma_ph,sigma_el,k_ph,k_el,mu_ph,mu_el,omega,ang,step)).^2;
+    % 
+    %     % Calculating probabilities
+    %     fun_photon(t,s) = -j10(pMM,pMP,pPM,pPP);
+    % end
+    % mu_fun_photon(t) = trapz(fun_photon(t,:))*mesh;
+    mu_fun_single_free(t) = -2*j1(abs(phiMinus(times_prob(t),L,theta_el,sigma_el,k_el,0,omega,step)).^2,abs(phiPlus(times_prob(t),L,theta_el,sigma_el,k_el,0,omega,step)).^2);
+    mu_fun_single_boundary(t) = abs(psiPlus(times_prob(t),L,theta_el,sigma_el,k_el,0,omega,abs(L),step)).^2;
 end
-
-figure
-hold on;
-plot(times,cumtrapz(times,mu_fun_single_free));
-plot(times,cumtrapz(times,mu_fun_single_boundary));
-xlabel('Time','Fontsize',20)
-title('Cumulative distributions of arrival times at Alice');
-xlim([0 time])
-ylim([0 1])
-xlimits=xlim;
-ylimits=ylim;
-text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*5/8,txt);
-hold off
 
 % TO PLOT THESE STATISTICS, GO TO PLOT_STATISTICS.M

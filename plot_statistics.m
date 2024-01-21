@@ -2,10 +2,7 @@ txt = {strcat('theta\_ph=',string(theta_ph)),strcat('theta\_el=',string(theta_el
 
 figure(1)
 hold on;
-xlabel('Position','FontSize',20);
-ylabel('Time','FontSize',20);
-title('Trajectories');
-xlim([mu_ph-1,mu_el+1])
+xlim([mu_ph-1,pos_bob])
 ylim([0 time])
 
 
@@ -20,6 +17,9 @@ for x=1:N
     drawnow
 end
 
+xlabel('Position','FontSize',20);
+ylabel('Time','FontSize',20);
+title('Trajectories');
 legend({'interacting photon','noninteracting electron','single electron w/ boundary'},'Location','southwest');
 xlimits=xlim;
 ylimits=ylim;
@@ -47,14 +47,14 @@ hold on;
 cdfplot(yy_photon);
 cdfplot(yy_single_free);
 cdfplot(yy_single_boundary);
-plot(times,cumtrapz(times,mu_fun_photon));
-plot(times,cumtrapz(times,mu_fun_single_free));
-plot(times,cumtrapz(times,mu_fun_single_boundary));
+% plot(times_prob,cumtrapz(times_prob,mu_fun_photon));
+plot(times_prob,cumtrapz(times_prob,mu_fun_single_free));
+plot(times_prob,cumtrapz(times_prob,mu_fun_single_boundary));
 xlabel('Time','Fontsize',20)
 title('Cumulative distributions of arrival times at Alice');
 xlim([0 time])
 ylim([0 1])
-legend({'interacting photon','noninteracting electron','single electron w/ boundary','normalized interacting photon','normalized noninteracting electron','normalized single electron w/ boundary','interacting photon','noninteracting electron','single electron w/ boundary','normalized interacting photon','normalized noninteracting electron','normalized single electron w/ boundary'},'Location','southwest');
+legend({'interacting photon','noninteracting electron','single electron w/ boundary','noninteracting electron','single electron w/ boundary'},'Location','southwest');
 xlimits=xlim;
 ylimits=ylim;
 text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*5/8,txt);
@@ -65,13 +65,13 @@ hold on;
 histogram(yy_photon);
 histogram(yy_single_free);
 histogram(yy_single_boundary);
-plot(times,mu_fun_photon);
-plot(times,mu_fun_single_free);
-plot(times,mu_fun_single_boundary);
+% plot(times_prob,mu_fun_photon);
+plot(times_prob,10*mu_fun_single_free);
+plot(times_prob,10*mu_fun_single_boundary);
 xlabel('Time','Fontsize',20)
 title('Histogram and pdf of arrival times at Alice');
 xlim([0 time])
-legend({'interacting photon','noninteracting electron','single electron w/ boundary','interacting photon','noninteracting electron','single electron w/ boundary','normalized interacting photon','normalized noninteracting electron','normalized single electron w/ boundary'},'Location','southwest');
+legend({'interacting photon','noninteracting electron','single electron w/ boundary','noninteracting electron','single electron w/ boundary'},'Location','southwest');
 xlimits=xlim;
 ylimits=ylim;
 text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*5/8,txt);
@@ -79,29 +79,26 @@ hold off
 
 figure(5)
 hold on;
-scatter(initvals(1,:),n_yy_photon);
-scatter(initvals(2,:),n_yy_single_free);
-scatter(initvals(2,:),n_yy_single_boundary);
+% scatter(initvals(1,:),n_yy_photon);
+% scatter(initvals(2,:),n_yy_single_free);
+% scatter(initvals(2,:),n_yy_single_boundary);
+% xlabel('Initial position','FontSize',20);
+% ylabel('Arrival time','FontSize',20);
+% title('Normalized arrival time of photon vs electron at Alice');
+% xlim([mu_ph-1,mu_el+1])
+% legend({'interacting photon','noninteracting electron','single electron w/ boundary'},'Location','southwest');
+% xlimits=xlim;
+% ylimits=ylim;
+% text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)+ylimits(1))*1/2,txt);
+scatter(initvals(1,:),yy_photon);
+scatter(initvals(2,:)-mu_el,yy_single_free);
+scatter(initvals(2,:)-mu_el,yy_single_boundary);
 xlabel('Initial position','FontSize',20);
 ylabel('Arrival time','FontSize',20);
-title('Normalized arrival time of photon vs electron at Alice');
+title('Arrival times of photon vs electron at Alice, Bob shifted to mu\_ph');
 xlim([mu_ph-1,mu_el+1])
+ylim([0 time])
 legend({'interacting photon','noninteracting electron','single electron w/ boundary'},'Location','southwest');
-xlimits=xlim;
-ylimits=ylim;
-text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)+ylimits(1))*1/2,txt);
-hold off
-
-figure(3)
-hold on;
-cdfplot(n_yy_photon);
-cdfplot(n_yy_single_free);
-cdfplot(n_yy_single_boundary);
-xlabel('Time','Fontsize',20)
-title('Cumulative distribution of arrival times at Alice');
-xlim([0 time])
-ylim([0 1])
-legend({'interacting photon','noninteracting electron','single electron w/ boundary','normalized interacting photon','normalized noninteracting electron','normalized single electron w/ boundary'},'Location','southwest');
 xlimits=xlim;
 ylimits=ylim;
 text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*5/8,txt);
