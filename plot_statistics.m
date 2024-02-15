@@ -2,9 +2,8 @@ txt = {strcat('theta\_ph=',string(theta_ph)),strcat('theta\_el=',string(theta_el
 
 figure(1)
 hold on;
-xlim([mu_ph-1,pos_bob])
+xlim([pos_alice,pos_bob])
 ylim([0 time])
-
 
 for x=1:N
     figure(1)
@@ -34,7 +33,7 @@ scatter(initvals(2,:),yy_single_boundary);
 xlabel('Initial position','FontSize',20);
 ylabel('Arrival time','FontSize',20);
 title('Arrival time of photon vs electron at Alice');
-xlim([mu_ph-1,mu_el+1])
+xlim([pos_alice,pos_bob])
 ylim([0 time])
 legend({'interacting photon','noninteracting electron','single electron w/ boundary'},'Location','southwest');
 xlimits=xlim;
@@ -96,7 +95,7 @@ scatter(initvals(2,:)-mu_el,yy_single_boundary);
 xlabel('Initial position','FontSize',20);
 ylabel('Arrival time','FontSize',20);
 title('Arrival times of photon vs electron at Alice, Bob shifted to mu\_ph');
-xlim([mu_ph-1,mu_el+1])
+xlim([pos_alice,pos_bob])
 ylim([0 time])
 legend({'interacting photon','noninteracting electron','single electron w/ boundary'},'Location','southwest');
 xlimits=xlim;
