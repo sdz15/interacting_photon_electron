@@ -1,3 +1,3 @@
-function val = psiMinusR(s,theta,sigma,k,mu)
-    val = cos(theta)*gauss(s,sigma,mu,k);
+function val = psiMinusR(s,theta,alpha,k,mu)
+    val = cos(theta)*gauss(s,alpha,mu,k);
 end

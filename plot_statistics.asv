@@ -1,4 +1,5 @@
-txt = {strcat('theta\_ph=',string(theta_ph)),strcat('theta\_el=',string(theta_el)),strcat('mu\_ph=',string(mu_ph)),strcat('mu\_el=',string(mu_el)),strcat('alpha\_ph=',string(alpha_ph)),strcat('alpha\_el=',string(alpha_el)),strcat('k\_ph=',string(k_ph)),strcat('k\_el=',string(k_el)),strcat('omega=',string(omega))};
+% txt = {strcat('theta\_ph=',string(theta_ph)),strcat('theta\_el=',string(theta_el)),strcat('mu\_ph=',string(mu_ph)),strcat('mu\_el=',string(mu_el)),strcat('alpha\_ph=',string(alpha_ph)),strcat('alpha\_el=',string(alpha_el)),strcat('k\_ph=',string(k_ph)),strcat('k\_el=',string(k_el)),strcat('omega=',string(omega))};
+txt = {strcat('theta=',string(theta_el)),strcat('sigma=',string(alpha_el)),strcat('k=',string(k_el)),strcat('omega=',string(omega))};
 
 figure(1)
 hold on;
@@ -46,7 +47,7 @@ hold on;
 cdfplot(yy_photon);
 cdfplot(yy_single_free);
 cdfplot(yy_single_boundary);
-% plot(times,cumtrapz(times_prob,mu_fun_photon));
+% plot(times_prob,cumtrapz(times_prob,mu_fun_photon));
 plot(times,cumtrapz(times_prob,mu_fun_single_free));
 plot(times,cumtrapz(times_prob,mu_fun_single_boundary));
 xlabel('Time','Fontsize',20)

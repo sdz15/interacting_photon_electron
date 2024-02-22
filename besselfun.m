@@ -6,7 +6,7 @@ function val = besselfun(x,omega,index)
 
     %Removing NaNs from the solution to take care of singularities
     arr = besselj(index,omega*x)./(x.^index);
-    arr(isnan(arr))=0;
+    arr(isnan(arr))=(omega^index)/(factorial(index)*2^index);
 
     val = arr;
 end
