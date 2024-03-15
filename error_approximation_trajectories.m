@@ -1,15 +1,15 @@
 theta = pi/2;
 mu = 0;
 alpha = 1;
-kappa = 1;
+kappa = 2;
 omega = 20;
 k = kappa*omega;
 ang = 0;
-time = 10;
+time = 30;
 mesh = 1/100;
 step = 1/mesh;
 
-N = 5;
+N = 100;
 
 times = (0:mesh:time)+1e-6;
 
@@ -68,6 +68,19 @@ xlim([0 time])
 xlabel('Time','FontSize',20);
 ylabel('Position error','FontSize',20);
 title('Error in position with respect to time');
+xlimits=xlim;
+ylimits=ylim;
+text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*1/4,txt);
+
+figure(3)
+for x=1:N
+    scatter(initvals(x),s_diff(x,ode_num));
+    hold on
+end
+xlim([mu-2*alpha mu+2*alpha])
+xlabel('Initial position')
+ylabel('Error')
+title('Error as a function of initial position')
 xlimits=xlim;
 ylimits=ylim;
 text(xlimits(1)+(xlimits(2)-xlimits(1))/16,(ylimits(2)-ylimits(1))*1/4,txt);
